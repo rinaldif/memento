@@ -7,7 +7,7 @@ import plotly.express as px
 
 st.set_page_config(
     page_title="dieversary",
-    page_icon="🌍",
+    page_icon="🚀",
     layout="wide",
     #initial_sidebar_state="expanded",
     #menu_items={
@@ -28,24 +28,40 @@ with st.sidebar:
                                 )
         st.form_submit_button('Calculate')
 
-tab1, tab2 = st.tabs(["Intro", "Memento Mori"])
+tab1, tab2, tab3 = st.tabs(["Your Journey", "Your Dieversary", "Memento Mori"])
 
+### Your Journey
 with tab1: 
     current_date = datetime.date.today()
 
     days_since_birth = current_date - usr_dob
 
-    st.markdown(f'Hello {usr_name if usr_name else 'there'}, you were born on {usr_dob} and you\'ve been travelling for {days_since_birth.days} days.')
+    st.subheader("A cosmic Journey!")
+    st.markdown(f'#### Hello {usr_name if usr_name else 'space traveller'}! 👋')
+    st.markdown(f'You were born on **<span style="font-size:15.0pt;">{usr_dob.strftime('%d-%b-%Y')}</span>**, it was a {usr_dob.strftime('%A')}, and you\'ve been travelling on this \
+                amazing spaceship we call Earth for **<span style="font-size:15.0pt;">{days_since_birth.days:,}</span>** days.', 
+                unsafe_allow_html=True)
+    st.markdown(f"""
+                - The Earth's speed at the equator relative to its center is 460 m/s (1656 km/h)  
+                - The Earth revolves around the Sun at a speed of 30 Km/s (108,000 Km/h)  
+                - Our solar system travels around the center of our galaxy at a speed of 220 km/s (792,000 km/h)  
+                - Galaxies around us travel at the incredible speed of 1000 Km/s (3,600,000 km/h) around the Great Attractor, a cluster of galaxies located at the gravitational center of Laniakea, the local supercluster to which the Milky Way also belongs.  
+                - The Great Attractor is about 150,000,000 light-years away from us; a light-year is equal to almost 9.461 billion kilometers.  
+                - So far, we've described these velocities relative to some other structure. But is there a universal reference point with respect to which we can define the motion and therefore the velocity of an object? The cosmic microwave background radiation, discovered in 1964, is the residual radiation from the early stages of the universe's birth and can still be observed today through a radio telescope. Towards the end of the 20th century, it was discovered that the Earth moves relative to the cosmic microwave background radiation at a well-defined speed and direction. The Earth travels at a speed of 370km/s (1,332,000 km/h) in the direction of the constellation Leo.  
+""")
 
+
+### Dieversaries
+with tab2: 
     st.markdown(f"Your 10000 dieversary will be on the {usr_dob+datetime.timedelta(days=10000)}")
     st.markdown(f"Your 11111 dieversary will be on the {usr_dob+datetime.timedelta(days=11111)}")
     st.markdown(f"Your 12345 dieversary will be on the {usr_dob+datetime.timedelta(days=12345)}")
     st.markdown(f"Your 31415 dieversary will be on the {usr_dob+datetime.timedelta(days=31415)}")
 
 
-with tab2: 
-    ###### Memento Mori Life Calendar
-
+### Memento Mori Life Calendar
+# inspiration: https://store.dailystoic.com/collections/memento-mori/products/premium-memento-mori-calendar
+with tab3: 
     # data definition for calendar
 
     dob = datetime.date(1988, 9, 25)
