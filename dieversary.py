@@ -37,18 +37,62 @@ with tab1:
     days_since_birth = current_date - usr_dob
 
     st.subheader("A cosmic Journey!")
-    st.markdown(f'#### Hello {usr_name if usr_name else 'space traveller'}! 👋')
+    st.markdown(f'#### 👋 Hello {usr_name if usr_name else 'space traveller'}!')
     st.markdown(f'You were born on **<span style="font-size:15.0pt;">{usr_dob.strftime('%d-%b-%Y')}</span>**, it was a {usr_dob.strftime('%A')}, and you\'ve been travelling on this \
                 amazing spaceship we call Earth for **<span style="font-size:15.0pt;">{days_since_birth.days:,}</span>** days.', 
                 unsafe_allow_html=True)
-    st.markdown(f"""
-                - The Earth's speed at the equator relative to its center is 460 m/s (1656 km/h)  
-                - The Earth revolves around the Sun at a speed of 30 Km/s (108,000 Km/h)  
-                - Our solar system travels around the center of our galaxy at a speed of 220 km/s (792,000 km/h)  
-                - Galaxies around us travel at the incredible speed of 1000 Km/s (3,600,000 km/h) around the Great Attractor, a cluster of galaxies located at the gravitational center of Laniakea, the local supercluster to which the Milky Way also belongs.  
-                - The Great Attractor is about 150,000,000 light-years away from us; a light-year is equal to almost 9.461 billion kilometers.  
-                - So far, we've described these velocities relative to some other structure. But is there a universal reference point with respect to which we can define the motion and therefore the velocity of an object? The cosmic microwave background radiation, discovered in 1964, is the residual radiation from the early stages of the universe's birth and can still be observed today through a radio telescope. Towards the end of the 20th century, it was discovered that the Earth moves relative to the cosmic microwave background radiation at a well-defined speed and direction. The Earth travels at a speed of 370km/s (1,332,000 km/h) in the direction of the constellation Leo.  
-""")
+    with st.expander("**Hey, do you know how fast you're going? Click here to find out!**"):
+        st.markdown(f"""
+                    - The Earth's speed at the equator relative to its center is 460 m/s (1656 km/h)  
+                    - The Earth revolves around the Sun at a speed of 30 Km/s (108,000 Km/h)  
+                    - Our solar system travels around the center of our galaxy at a speed of 220 km/s (792,000 km/h)  
+                    - Galaxies around us travel at the incredible speed of 1000 Km/s (3,600,000 km/h) around the Great Attractor, 
+                    a cluster of galaxies located at the gravitational center of Laniakea, the local supercluster to which the Milky Way 
+                    also belongs.  
+                    - The Great Attractor is about 150,000,000 light-years away from us; a light-year is equal to almost 9.461 billion kilometers.  
+                    - So far, we've described these velocities relative to some other structure. But is there a universal reference point 
+                    with respect to which we can define the motion and therefore the velocity of an object? The cosmic microwave background 
+                    radiation, discovered in 1964, is the residual radiation from the early stages of the universe's birth and can still be 
+                    observed today through a radio telescope. Towards the end of the 20th century, it was discovered that the Earth moves 
+                    relative to the cosmic microwave background radiation at a well-defined speed and direction. The Earth travels at a 
+                    speed of 370km/s (1,332,000 km/h) in the direction of the constellation Leo.
+                    """)
+    st.markdown(f'Now, since `1 day = 24 hours`, it follows that `{days_since_birth.days:,} days = {24*days_since_birth.days:,} hours` \
+                therefore so far in your lifetime you have traveled **<span style="font-size:15.0pt;">{24*days_since_birth.days*1332000:,}</span>** km.', 
+                unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    
+    with col1: 
+        st.markdown(f"""
+                ##### Feeling down?  
+                On those days when you wake up and feel like you haven't accomplished enough or if you just need a little nudge, remember that in your lifetime you've already \
+                    explored over **<span style="font-size:13.0pt;">{str(24*days_since_birth.days*1332000)[:3]} billion kilometers</span>** of \
+                        cosmic space!
+                """, unsafe_allow_html=True)
+        st.markdown(" ")
+    with col2: 
+        st.markdown(f"""
+                ##### Need some grounding?  
+                When, on the other hand, you feel on top of the world and need to come back down to earth, consider that \
+                    those {str(24*days_since_birth.days*1332000)[:3]} billion kilometers are equivalent to \
+                        about **<span style="font-size:13.0pt;">{24*days_since_birth.days*1332000/9461000000000:.5f} light-years</span>**.
+                """, unsafe_allow_html=True)
+    
+    st.markdown(f"Furthermore, consider that the observable universe currently has a diameter of about 92 billion light-years, \
+                so the portion you've explored so far is equivalent to {(24*days_since_birth.days*1332000/9461000000000)/92000000000*100:.15f}% of its diameter.")
+    st.markdown(f"Does this make you feel like a tiny ant? Well, know that the comparison doesn't hold up in reality. \
+                In fact, a small ant like the Pharaoh ant is about 0.2cm long, and if we compare it to Earth's diameter, \
+                which is about 1,274,200,000cm, then the insect is equivalent to about 0.000000015696123% of the Earth's diameter, \
+                so this comparison would underestimate the proportion by about 3 orders of magnitude!")
+    st.markdown(f"""To have a more accurate comparison, we need to disturb the tardigrades... what? You don't know what tardigrades are? 
+                Well, they are a phylum of coelomate protostome invertebrates! These are colloquially called "water bears," 
+                eight-legged creatures whose smallest specimens are about 0.1mm long and whose peculiarity is that they can survive in 
+                extreme conditions, even in space! So, compared to the Earth's diameter, a tardigrade has a length of 
+                about 0.000000000078481%, which is still about twice the proportion we started with.""")  
+    st.markdown(f"""Therefore, in conclusion, the correct proportion is that the distance you've traveled in space so far compared to \
+                the length of the observable universe is equal to traveling half the length of a small tardigrade (0.05mm) compared to \
+                the Earth's diameter!""")
+
 
 
 ### Dieversaries
