@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import datetime
 import plotly.express as px
+import math
 
 
 st.set_page_config(
@@ -16,6 +17,12 @@ st.set_page_config(
     #    'About': "# This is a header. This is an *extremely* cool app!"
     #}
 )
+
+earth_speed_kmh = 1332000
+ant_cm = 0.2
+earth_diameter_cm = 1274200000
+def magnitude(n): 
+    return math.floor(math.log10(n))
 
 st.header("dieversary")
 
@@ -55,10 +62,10 @@ with tab1:
                     radiation, discovered in 1964, is the residual radiation from the early stages of the universe's birth and can still be 
                     observed today through a radio telescope. Towards the end of the 20th century, it was discovered that the Earth moves 
                     relative to the cosmic microwave background radiation at a well-defined speed and direction. The Earth travels at a 
-                    speed of 370km/s (1,332,000 km/h) in the direction of the constellation Leo.
+                    speed of 370km/s ({earth_speed_kmh:,} km/h) in the direction of the constellation Leo.
                     """)
     st.markdown(f'Now, since `1 day = 24 hours`, it follows that `{days_since_birth.days:,} days = {24*days_since_birth.days:,} hours` \
-                therefore so far in your lifetime you have traveled **<span style="font-size:15.0pt;">{24*days_since_birth.days*1332000:,}</span>** km.', 
+                and since we just learned that Earth travels at a speed of {earth_speed_kmh:,} km/h it means that so far in your lifetime you have traveled **<span style="font-size:15.0pt;">{24*days_since_birth.days*1332000:,}</span>** km.', 
                 unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     
@@ -66,7 +73,7 @@ with tab1:
         st.markdown(f"""
                 ##### Feeling down?  
                 On those days when you wake up and feel like you haven't accomplished enough or if you just need a little nudge, remember that in your lifetime you've already \
-                    explored over **<span style="font-size:13.0pt;">{str(24*days_since_birth.days*1332000)[:3]} billion kilometers</span>** of \
+                    explored over **<span style="font-size:13.0pt;">{str(24*days_since_birth.days*earth_speed_kmh)[:3]} billion kilometers</span>** of \
                         cosmic space!
                 """, unsafe_allow_html=True)
         st.markdown(" ")
@@ -74,24 +81,33 @@ with tab1:
         st.markdown(f"""
                 ##### Need some grounding?  
                 When, on the other hand, you feel on top of the world and need to come back down to earth, consider that \
-                    those {str(24*days_since_birth.days*1332000)[:3]} billion kilometers are equivalent to \
-                        about **<span style="font-size:13.0pt;">{24*days_since_birth.days*1332000/9461000000000:.5f} light-years</span>**.
+                    those {str(24*days_since_birth.days*earth_speed_kmh)[:3]} billion kilometers are equivalent to \
+                        about **<span style="font-size:13.0pt;">{24*days_since_birth.days*earth_speed_kmh/9461000000000:.5f} light-years</span>**.
                 """, unsafe_allow_html=True)
     
     st.markdown(f"Furthermore, consider that the observable universe currently has a diameter of about 92 billion light-years, \
-                so the portion you've explored so far is equivalent to {(24*days_since_birth.days*1332000/9461000000000)/92000000000*100:.15f}% of its diameter.")
+                so the portion you've explored so far is equivalent to {(24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000*100:.15f}% of \
+                    its diameter.")
     st.markdown(f"Does this make you feel like a tiny ant? Well, know that the comparison doesn't hold up in reality. \
-                In fact, a small ant like the Pharaoh ant is about 0.2cm long, and if we compare it to Earth's diameter, \
-                which is about 1,274,200,000cm, then the insect is equivalent to about 0.000000015696123% of the Earth's diameter, \
-                so this comparison would underestimate the proportion by about 3 orders of magnitude!")
-    st.markdown(f"""To have a more accurate comparison, we need to disturb the tardigrades... what? You don't know what tardigrades are? 
+                In fact, a small ant like the Pharaoh ant is about {ant_cm}cm long, and if we compare it to Earth's diameter, \
+                which is about {earth_diameter_cm:,}cm, then the insect is equivalent to about {ant_cm/earth_diameter_cm*100:.15f}% of the Earth's diameter, \
+                so this comparison would underestimate the proportion by about {abs(magnitude((24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000) - magnitude(ant_cm/earth_diameter_cm))} orders of magnitude!")
+    st.error("👇 Cambiare da tardigrado a nucleo della cellula (grandezza giusta per confronto è 0.001cm): 👇")
+    st.markdown(f"""To have a more accurate comparison, we need to borrow a microscope... :microscope:  
+                ~~To have a more accurate comparison, we need to disturb the tardigrades... what? You don't know what tardigrades are? 
                 Well, they are a phylum of coelomate protostome invertebrates! These are colloquially called "water bears," 
                 eight-legged creatures whose smallest specimens are about 0.1mm long and whose peculiarity is that they can survive in 
                 extreme conditions, even in space! So, compared to the Earth's diameter, a tardigrade has a length of 
-                about 0.000000000078481%, which is still about twice the proportion we started with.""")  
+                about {0.01/earth_diameter_cm*100:.15f}%, which is still about {math.floor((0.01/earth_diameter_cm) / ((24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000))} \
+                times bigger than the proportion we started with.~~""") 
     st.markdown(f"""Therefore, in conclusion, the correct proportion is that the distance you've traveled in space so far compared to \
-                the length of the observable universe is equal to traveling half the length of a small tardigrade (0.05mm) compared to \
+                the length of the observable universe is equal to traveling one {math.floor((0.01/earth_diameter_cm) / ((24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000))}th the length of a small tardigrade (less than 0.01mm) compared to \
                 the Earth's diameter!""")
+    st.markdown(f"""
+            - prop: {((24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000):.15f}
+            - prop: {(0.001/earth_diameter_cm):.15f}
+            - ratio: {math.floor((0.001/earth_diameter_cm) / ((24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000))}
+            """)
 
 
 
