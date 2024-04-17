@@ -27,7 +27,7 @@ def magnitude(n):
     else: 
         return 1
 
-st.header("dieversary")
+st.header("Memento Vivere")
 
 with st.sidebar: 
     with st.form(key='data_entry', border=False):
@@ -155,6 +155,19 @@ else:
     ### Memento Mori Life Calendar
     # inspiration: https://store.dailystoic.com/collections/memento-mori/products/premium-memento-mori-calendar
     with tab3: 
+        st.markdown(" ")
+        st.markdown("##### The following is an interactive Memento Mori calendar.")
+        st.caption("*Credits: this calendar has been inspired by the Daily Stoic Memento Mori [calendar](https://store.dailystoic.com/collections/memento-mori/products/premium-memento-mori-calendar).*")
+        st.markdown("""> *You could leave life right now. Let that determine what you do and say and think.*  
+                    **Marcus Aurelius**""")
+        st.markdown("""
+                    Nowadays, the average human lifespan is **<span style="font-size:13.0pt;">80 years</span>**, that is 4,160 weeks. **Each square in this calendar represents 
+                    a week of your life** and each column contains 52 weeks, that is 1 year of your life: 
+                    - by looking at the :grey[**dark-grey squares**], you will see how much life you've already lived 
+                    (or as [Seneca said](https://www.goodreads.com/quotes/447621-what-man-can-you-show-me-who-places-any-value), how much you’ve already died), 
+                    - whereas the :grey[*light-grey squares*] will show you how much life you've (hopefully) got left.
+                    """, unsafe_allow_html=True)
+
         # data definition for calendar
 
         dob = datetime.date(1988, 9, 25)
@@ -169,9 +182,9 @@ else:
         weeks_cal = np.vstack((np.ones((round(weeks),1)), 
                             np.zeros((weeks_rem,1)) ))
                             
-        df_cal = pd.DataFrame(data=weeks_cal.reshape(-1,52), 
-                            index=range(1,81), 
-                            columns=[str(wk) for wk in range(1,53)])
+        df_cal = pd.DataFrame(data=weeks_cal.reshape(-1,52).T, 
+                            index=[str(wk) for wk in range(1,53)], 
+                            columns=range(1,81))
 
         # plot
         cell_size = 15
@@ -179,9 +192,12 @@ else:
         width = cell_size*len(df_cal.columns) + row_title_width
         height = cell_size*len(df_cal.index)
 
-        fig = px.imshow(df_cal, width=width, height=height, color_continuous_scale=['lightgrey', 'darkgrey'])
+        fig = px.imshow(df_cal, width=width, height=height, color_continuous_scale=['lightgrey', 'darkgrey'], 
+                        labels=dict(x="Years in your life", y="Weeks in the year", color="Lived / not yet lived")
+                        )
         fig.update(layout_coloraxis_showscale=False)   # to remove the colorscale
         fig.update_layout(showlegend=False)
+        fig.update_layout(xaxis={'side': 'top'})   # move x-axis to the top of the chart/calendar
 
         for i in range(len(df_cal.columns)):
             fig.add_shape(type="line", x0=0.5 + i, y0=0.5, x1=0.5 + i, y1=len(df_cal.index) + 0.5, line=dict(color="white", width=1))
