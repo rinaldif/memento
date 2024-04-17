@@ -102,7 +102,7 @@ else:
                     so **the portion you've explored so far** is equivalent to 
                     **<span style="font-size:13.0pt;">{(24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000*100:.15f}%</span>** \
                     of its diameter.  
-                    <img src=https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zM19zYmFfZ2FsYXh5X19pc29sYXRlZF9vbl93aGl0ZV9iYWNrZ3JvdW5kX2E2NmQ2YWJmLWMwN2QtNGU1Yy05OTNkLWIxM2Q1ZmUzOWRmZl8xLmpwZw.jpg alt="Galaxy artwork" width="400">
+                    <img src=https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zM19zYmFfZ2FsYXh5X19pc29sYXRlZF9vbl93aGl0ZV9iYWNrZ3JvdW5kX2E2NmQ2YWJmLWMwN2QtNGU1Yy05OTNkLWIxM2Q1ZmUzOWRmZl8xLmpwZw.jpg alt="Galaxy artwork" width="350">
                     """, unsafe_allow_html=True)
         
         st.markdown(f"""Does this make you feel like a **tiny ant**? Well, you should know that the comparison doesn't actually hold up. \
