@@ -29,22 +29,25 @@ def magnitude(n):
 
 st.header("Memento Vivere")
 
-with st.sidebar.form(key='data_entry', border=False):
-    usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
-    usr_dob = st.date_input('Your Date of Birth', 
-                            value=None, 
-                            min_value=datetime.date(1900, 1, 1), 
-                            max_value=datetime.date.today() - datetime.timedelta(days=1)
-                            )
-    st.form_submit_button('Calculate')
+col1, col2, col3 = st.columns(3)
+        
+with col1: 
+    st.markdown("#### Please enter your :orange[name] and :orange[date of birth] in the form below.")
+    with st.form(key='data_entry', border=False):
+        usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
+        usr_dob = st.date_input('Your Date of Birth', 
+                                value=None, 
+                                min_value=datetime.date(1900, 1, 1), 
+                                max_value=datetime.date.today() - datetime.timedelta(days=1)
+                                )
+        st.form_submit_button('Calculate')
 
 if usr_dob is None: 
     st.markdown(" ")
-    st.markdown("#### Please enter your :orange[name] and :orange[date of birth] in the sidebar.")
 else:
     tab1, tab2, tab3 = st.tabs(["A Space Journey", "Your Dayversary", "Memento Mori"])
 
-    ### Your Journey
+    ### Your Cosmic Journey
     with tab1: 
         current_date = datetime.date.today()
 
