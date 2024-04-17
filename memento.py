@@ -204,9 +204,8 @@ else:
         for i in range(len(df_cal.index)):
             fig.add_shape(type="line", x0=0.5, y0=0.5 + i, x1=len(df_cal.columns) + 0.5, y1=0.5 + i, line=dict(color="white", width=1))
 
-        st.plotly_chart(fig, use_container_width=True, config = {'displayModeBar': False})
+        st.plotly_chart(fig, use_container_width=False, config = {'displayModeBar': False})
 
-        #fig.show()
 
 
 
