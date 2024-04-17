@@ -29,15 +29,14 @@ def magnitude(n):
 
 st.header("Memento Vivere")
 
-with st.sidebar: 
-    with st.form(key='data_entry', border=False):
-        usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
-        usr_dob = st.date_input('Your Date of Birth', 
-                                value=None, 
-                                min_value=datetime.date(1900, 1, 1), 
-                                max_value=datetime.date.today() - datetime.timedelta(days=1)
-                                )
-        st.form_submit_button('Calculate')
+with st.sidebar.form(key='data_entry', border=False):
+    usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
+    usr_dob = st.date_input('Your Date of Birth', 
+                            value=None, 
+                            min_value=datetime.date(1900, 1, 1), 
+                            max_value=datetime.date.today() - datetime.timedelta(days=1)
+                            )
+    st.form_submit_button('Calculate')
 
 if usr_dob is None: 
     st.markdown(" ")
