@@ -20,6 +20,7 @@ st.set_page_config(
 )
 
 # Initial constants and functions definition
+today = datetime.date.today()
 earth_speed_kmh = 1332000
 ant_cm = 0.2
 earth_diameter_cm = 1274200000
@@ -157,30 +158,44 @@ else:
     # inspiration: https://store.dailystoic.com/collections/memento-mori/products/premium-memento-mori-calendar
     with tab3: 
         st.markdown(" ")
-        st.markdown("##### The following is an interactive Memento Mori calendar.")
+        st.markdown("##### The following is an interactive [Memento Mori](https://en.wikipedia.org/wiki/Memento_mori) calendar.")
         st.caption("*Credits: this calendar has been inspired by the Daily Stoic Memento Mori [calendar](https://store.dailystoic.com/collections/memento-mori/products/premium-memento-mori-calendar).*")
         st.markdown("""> *You could leave life right now. Let that determine what you do and say and think.*  
                     **Marcus Aurelius**""")
+        years_left = 80 - (today - usr_dob).days/365 if (today - usr_dob).days/365 <= 80 else 0
+        #st.markdown(f"""Nowadays, the average human lifespan is **80 years**, that is {80*52:,} weeks or {80*52*7:,} days. """)
+        if (today - usr_dob).days/365 < 80: 
+            st.markdown(f"""Nowadays, the average human lifespan is **80 years**, that is {80*52:,} weeks or {80*52*7:,} days.  
+                        If you were lucky enough to live that long, you would have **<span style="font-size:15.0pt;">{years_left:.0f} years left to live</span>**, then think again to Marcus Aurelius words: **how will you spend them?** 
+                        """, unsafe_allow_html=True)
+        else: 
+            st.markdown(f"""Nowadays, the average human lifespan is **80 years**, that is {80*52:,} weeks or {80*52*7:,} days and 
+                        you were lucky enough to live that long! 
+                        """)
         st.markdown("""
-                    Nowadays, the average human lifespan is **<span style="font-size:13.0pt;">80 years</span>**, that is 4,160 weeks. **Each square in this calendar represents 
-                    a week of your life** and each column contains 52 weeks, that is 1 year of your life: 
-                    - by looking at the :grey[**dark-grey squares**], you will see how much life you've already lived 
-                    (or as [Seneca said](https://www.goodreads.com/quotes/447621-what-man-can-you-show-me-who-places-any-value), how much you’ve already died), 
-                    - whereas the :grey[*light-grey squares*] will show you how much life you've (hopefully) got left.
-                    """, unsafe_allow_html=True)
+                        **Each square in this calendar represents a week of your life** and each column contains 52 weeks, that is 1 year of your life: 
+                        - by looking at the :grey[**dark-grey squares**], you will see how much life you've already lived 
+                        (or as [Seneca said](https://www.goodreads.com/quotes/447621-what-man-can-you-show-me-who-places-any-value), how much you’ve already died), 
+                        - whereas the :grey[*light-grey squares*] will show you how much life you've (hopefully) got left.
+                        """, unsafe_allow_html=True)
         st.info("Note: calendar redering is optimized for desktop consumption.")
 
         # data definition for calendar
 
-        dob = datetime.date(1988, 9, 25)
-        today = datetime.date.today()
+        #dob = datetime.date(1988, 9, 25)
         #days = (today - dob).days
-        weeks = (today - usr_dob).days/7
         #years = (today - dob).days/365
+
+        # This if-else is necessary for those entering a dob resulting in an age greater than 80 years
+        
+        if (today - usr_dob).days/7 <= 4160: 
+            weeks = (today - usr_dob).days/7
+        else: 
+            weeks = 4160
 
         weeks_max = 80*52
         weeks_rem = weeks_max - round(weeks)
-
+        
         weeks_cal = np.vstack((np.ones((round(weeks),1)), 
                             np.zeros((weeks_rem,1)) ))
                             
@@ -208,6 +223,13 @@ else:
             fig.add_shape(type="line", x0=0.5, y0=0.5 + i, x1=len(df_cal.columns) + 0.5, y1=0.5 + i, line=dict(color="white", width=1))
 
         st.plotly_chart(fig, use_container_width=True, config = {'displayModeBar': False})
+
+        st.markdown("""
+                    Let's not forget that while we should to ponder on the brevity of life, we also need to hold that knowledge in tension with 
+                    how incredible life can be when we remember to live it well and with purpouse: 
+                    - Memento Mori: remember that you will die 
+                    - Memento Vivere: **remember to live!**
+                    """)
 
 
 
