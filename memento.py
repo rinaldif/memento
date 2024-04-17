@@ -10,7 +10,7 @@ import math
 st.set_page_config(
     page_title="Memento Vivere",
     page_icon="🚀",
-    #layout="wide",
+    layout="wide",
     initial_sidebar_state="expanded"
     #menu_items={
     #    'Get Help': 'https://www.extremelycoolapp.com/help',
@@ -31,16 +31,18 @@ def magnitude(n):
 
 st.header("Memento Vivere")
 
-# Form to enter input information
-st.markdown("#### Please enter your :orange[name] and :orange[date of birth] in the form below.")
-with st.form(key='data_entry', border=False):
-    usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
-    usr_dob = st.date_input('Your Date of Birth', 
-                            value=None, 
-                            min_value=datetime.date(1900, 1, 1), 
-                            max_value=datetime.date.today() - datetime.timedelta(days=1)
-                            )
-    st.form_submit_button('Calculate')
+col1, col2 = st.columns(2)
+with col1: 
+    # Form to enter input information
+    st.markdown("#### Please enter your :orange[name] and :orange[date of birth] in the form below.")
+    with st.form(key='data_entry', border=False):
+        usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
+        usr_dob = st.date_input('Your Date of Birth', 
+                                value=None, 
+                                min_value=datetime.date(1900, 1, 1), 
+                                max_value=datetime.date.today() - datetime.timedelta(days=1)
+                                )
+        st.form_submit_button('Calculate')
 
 # Main body of the app
 if usr_dob is None: 
@@ -204,7 +206,7 @@ else:
         for i in range(len(df_cal.index)):
             fig.add_shape(type="line", x0=0.5, y0=0.5 + i, x1=len(df_cal.columns) + 0.5, y1=0.5 + i, line=dict(color="white", width=1))
 
-        st.plotly_chart(fig, use_container_width=False, config = {'displayModeBar': False})
+        st.plotly_chart(fig, use_container_width=True, config = {'displayModeBar': False})
 
 
 
