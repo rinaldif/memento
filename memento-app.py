@@ -7,7 +7,7 @@ import math
 
 
 st.set_page_config(
-    page_title="dieversary",
+    page_title="Memento Vivere",
     page_icon="🚀",
     layout="wide",
     #initial_sidebar_state="expanded",
@@ -31,7 +31,7 @@ st.header("Memento Vivere")
 
 with st.sidebar: 
     with st.form(key='data_entry', border=False):
-        usr_name = st.text_input('Your Name', placeholder="Enter your name")
+        usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
         usr_dob = st.date_input('Your Date of Birth', 
                                 value=None, 
                                 min_value=datetime.date(1900, 1, 1), 
@@ -43,7 +43,7 @@ if usr_dob is None:
     st.markdown(" ")
     st.markdown("#### Please enter your :orange[name] and :orange[date of birth] in the sidebar.")
 else:
-    tab1, tab2, tab3 = st.tabs(["A Space Journey", "Your Dieversary", "Memento Mori"])
+    tab1, tab2, tab3 = st.tabs(["A Space Journey", "Your Dayversary", "Memento Mori"])
 
     ### Your Journey
     with tab1: 
@@ -129,28 +129,25 @@ else:
                     **<span style="font-size:15.0pt;">the Earth's diameter</span>**!</span>
                     """, unsafe_allow_html=True)
 
-    ### Dieversaries
+    ### Dayversaries
     with tab2: 
         st.markdown(" ")
-        st.markdown("##### Use the input below to find out the date of your past, current or future dieversary.")
+        st.markdown("##### Use the input below to find out the date of your past, current or future dayversary.")
         col1, col2 = st.columns(2)
         with col1: 
             days_input = col1.number_input("Enter the number of days", 
                                            value=10000, 
                                            min_value=0)
         if usr_dob+datetime.timedelta(days=days_input) < datetime.date.today(): 
-            st.subheader(f"Your {days_input:,} dieversary was on the {usr_dob+datetime.timedelta(days=days_input)}")
+            st.subheader(f"Your {days_input:,} dayversary was on the {usr_dob+datetime.timedelta(days=days_input)}")
             st.markdown(f"##### and you were about {days_input/365:.0f} years old")
         elif usr_dob+datetime.timedelta(days=days_input) > datetime.date.today(): 
-            st.subheader(f"Your {days_input:,} dieversary will be on the {usr_dob+datetime.timedelta(days=days_input)}")
+            st.subheader(f"Your {days_input:,} dayversary will be on the {usr_dob+datetime.timedelta(days=days_input)}")
             st.markdown(f"###### and you will be about {days_input/365:.0f} years old")
         elif usr_dob+datetime.timedelta(days=days_input) == datetime.date.today(): 
-            st.subheader(f"Hoorray! 🎉 Your dieversary is today!!")
+            st.subheader(f"Hoorray! 🎉 Your dayversary is today!!")
         else: 
             st.markdown("Something went wrong... 🤖")
-        #st.markdown(f"Your 11111 dieversary will be on the {usr_dob+datetime.timedelta(days=11111)}")
-        #st.markdown(f"Your 12345 dieversary will be on the {usr_dob+datetime.timedelta(days=12345)}")
-        #st.markdown(f"Your 31415 dieversary will be on the {usr_dob+datetime.timedelta(days=31415)}")
 
     ### Memento Mori Life Calendar
     # inspiration: https://store.dailystoic.com/collections/memento-mori/products/premium-memento-mori-calendar
