@@ -31,9 +31,9 @@ def magnitude(n):
 
 st.header("Memento Vivere")
 
+# Form to enter input information
 col1, col2 = st.columns(2)
 with col1: 
-    # Form to enter input information
     st.markdown("#### Please enter your :orange[name] and :orange[date of birth] in the form below.")
     with st.form(key='data_entry', border=False):
         usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
@@ -168,6 +168,7 @@ else:
                     (or as [Seneca said](https://www.goodreads.com/quotes/447621-what-man-can-you-show-me-who-places-any-value), how much you’ve already died), 
                     - whereas the :grey[*light-grey squares*] will show you how much life you've (hopefully) got left.
                     """, unsafe_allow_html=True)
+        st.info("Note: calendar redering is optimized for desktop consumption.")
 
         # data definition for calendar
 
