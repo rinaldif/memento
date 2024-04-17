@@ -52,9 +52,9 @@ else:
         days_since_birth = current_date - usr_dob
 
         st.subheader("A cosmic Journey!")
-        st.markdown(f'#### 👋 Hello {usr_name if usr_name else 'space traveller'}!')
-        st.markdown(f'You were born on **<span style="font-size:15.0pt;">{usr_dob.strftime('%d-%b-%Y')}</span>**, it was a **{usr_dob.strftime('%A')}**, and you\'ve been travelling on this \
-                    amazing spaceship we call Earth for **<span style="font-size:15.0pt;">{days_since_birth.days:,}</span>** days.', 
+        st.markdown(f"#### 👋 Hello {usr_name if usr_name else 'space traveller'}!")
+        st.markdown(f"""You were born on **<span style="font-size:15.0pt;">{usr_dob.strftime('%d-%b-%Y')}</span>**, it was a **{usr_dob.strftime('%A')}**, and you\'ve been travelling on this \
+                    amazing spaceship we call Earth for **<span style="font-size:15.0pt;">{days_since_birth.days:,}</span>** days.""", 
                     unsafe_allow_html=True)
         with st.expander("**Hey, do you know how fast you're going? :orange[Click here] to find out!**"):
             st.markdown(f"""
@@ -72,8 +72,8 @@ else:
                         relative to the cosmic microwave background radiation at a well-defined speed and direction. The Earth travels at a 
                         speed of 370km/s ({earth_speed_kmh:,} km/h) in the direction of the constellation Leo.
                         """)
-        st.markdown(f'Now, since `1 day = 24 hours`, it follows that `{days_since_birth.days:,} days = {24*days_since_birth.days:,} hours` \
-                    and since we just learned that **Earth travels at a speed of {earth_speed_kmh:,} km/h** it means that so far in your lifetime you have traveled **<span style="font-size:15.0pt;">{24*days_since_birth.days*1332000:,}</span>** km.', 
+        st.markdown(f"""Now, since `1 day = 24 hours`, it follows that `{days_since_birth.days:,} days = {24*days_since_birth.days:,} hours` \
+                    and since we just learned that **Earth travels at a speed of {earth_speed_kmh:,} km/h** it means that so far in your lifetime you have traveled **<span style="font-size:15.0pt;">{24*days_since_birth.days*1332000:,}</span>** km.""", 
                     unsafe_allow_html=True)
         col1, col2 = st.columns(2)
         
