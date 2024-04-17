@@ -6,10 +6,11 @@ import plotly.express as px
 import math
 
 
+# Page config and setup
 st.set_page_config(
     page_title="Memento Vivere",
     page_icon="🚀",
-    layout="wide",
+    #layout="wide",
     initial_sidebar_state="expanded"
     #menu_items={
     #    'Get Help': 'https://www.extremelycoolapp.com/help',
@@ -18,6 +19,7 @@ st.set_page_config(
     #}
 )
 
+# Initial constants and functions definition
 earth_speed_kmh = 1332000
 ant_cm = 0.2
 earth_diameter_cm = 1274200000
@@ -29,19 +31,18 @@ def magnitude(n):
 
 st.header("Memento Vivere")
 
-col1, col2, col3 = st.columns(3)
-        
-with col1: 
-    st.markdown("#### Please enter your :orange[name] and :orange[date of birth] in the form below.")
-    with st.form(key='data_entry', border=False):
-        usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
-        usr_dob = st.date_input('Your Date of Birth', 
-                                value=None, 
-                                min_value=datetime.date(1900, 1, 1), 
-                                max_value=datetime.date.today() - datetime.timedelta(days=1)
-                                )
-        st.form_submit_button('Calculate')
+# Form to enter input information
+st.markdown("#### Please enter your :orange[name] and :orange[date of birth] in the form below.")
+with st.form(key='data_entry', border=False):
+    usr_name = st.text_input('Your Name', placeholder="Enter your name (optional)")
+    usr_dob = st.date_input('Your Date of Birth', 
+                            value=None, 
+                            min_value=datetime.date(1900, 1, 1), 
+                            max_value=datetime.date.today() - datetime.timedelta(days=1)
+                            )
+    st.form_submit_button('Calculate')
 
+# Main body of the app
 if usr_dob is None: 
     st.markdown(" ")
 else:
@@ -95,14 +96,13 @@ else:
                             about **<span style="font-size:13.0pt;">{24*days_since_birth.days*earth_speed_kmh/9461000000000:.5f} light-years</span>**.
                     """, unsafe_allow_html=True)
         
-
         st.markdown("##### So is that a lot or not?")
         st.markdown(f"""It's hard to juggle such astronomical numbers in our head, so let's compare them to something we have more direct experience with.  
                     But first, consider this: the [**observable universe**](https://en.wikipedia.org/wiki/Observable_universe) currently has a diameter of about **<span style="font-size:13.0pt;">92 billion light-years</span>**,
                     so **the portion you've explored so far** is equivalent to 
                     **<span style="font-size:13.0pt;">{(24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000*100:.15f}%</span>** \
                     of its diameter.  
-                    <img src=https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zM19zYmFfZ2FsYXh5X19pc29sYXRlZF9vbl93aGl0ZV9iYWNrZ3JvdW5kX2E2NmQ2YWJmLWMwN2QtNGU1Yy05OTNkLWIxM2Q1ZmUzOWRmZl8xLmpwZw.jpg alt="Galaxy artwork" width="600">
+                    <img src=https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zM19zYmFfZ2FsYXh5X19pc29sYXRlZF9vbl93aGl0ZV9iYWNrZ3JvdW5kX2E2NmQ2YWJmLWMwN2QtNGU1Yy05OTNkLWIxM2Q1ZmUzOWRmZl8xLmpwZw.jpg alt="Galaxy artwork" width="400">
                     """, unsafe_allow_html=True)
         
         st.markdown(f"""Does this make you feel like a **tiny ant**? Well, you should know that the comparison doesn't actually hold up. \
@@ -110,7 +110,7 @@ else:
                     which is about {earth_diameter_cm:,}cm, then the insect is equivalent to about **<span style="font-size:13.0pt;">{ant_cm/earth_diameter_cm*100:.15f}%</span>** of the Earth's diameter, \
                     so this comparison would underestimate the proportion by about **<span style="font-size:13.0pt;">{abs(magnitude((24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000) - magnitude(ant_cm/earth_diameter_cm))} orders of magnitude</span>**!""", 
                     unsafe_allow_html=True)
-        st.markdown("""<img src=https://media.istockphoto.com/id/1387046877/vector/many-ants-vector-seamless-pattern.jpg?s=612x612&w=0&k=20&c=Ri4xcPgpsIdSIDk05XNOy0ime8U3tQ5X62RTxmgXDQM= alt="Ants on white background" width="400">""", 
+        st.markdown("""<img src=https://media.istockphoto.com/id/1387046877/vector/many-ants-vector-seamless-pattern.jpg?s=612x612&w=0&k=20&c=Ri4xcPgpsIdSIDk05XNOy0ime8U3tQ5X62RTxmgXDQM= alt="Ants on white background" width="350">""", 
                         unsafe_allow_html=True)
 
         st.markdown(f"""To have a more accurate comparison, we need to borrow a microscope! :microscope:  
