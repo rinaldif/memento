@@ -21,14 +21,25 @@ st.set_page_config(
 
 # Initial constants and functions definition
 today = datetime.date.today()
-earth_speed_kmh = 1332000
-ant_cm = 0.2
-earth_diameter_cm = 1274200000
-def magnitude(n): 
-    if n > 0: 
-        return math.floor(math.log10(n))
-    else: 
-        return 1
+
+# Physical constants
+EARTH_SPEED_KMH = 1_332_000  # Earth's speed relative to CMB in km/h
+LIGHT_YEAR_KM = 9_461_000_000_000  # One light-year in km
+OBSERVABLE_UNIVERSE_LY = 92_000_000_000  # Observable universe diameter in light-years
+ANT_CM = 0.2  # Pharaoh ant size in cm
+CELL_NUCLEUS_CM = 0.001  # Average animal cell nucleus diameter in cm
+EARTH_DIAMETER_CM = 1_274_200_000  # Earth's diameter in cm
+
+# Time constants
+HOURS_PER_DAY = 24
+DAYS_PER_YEAR = 365.25  # Account for leap years
+WEEKS_PER_YEAR = 52
+AVERAGE_LIFESPAN_YEARS = 80
+
+def magnitude(n):
+    if n <= 0:
+        raise ValueError("magnitude requires a positive number")
+    return math.floor(math.log10(n))
 
 st.header("Memento Vivere")
 
@@ -52,10 +63,17 @@ else:
     tab1, tab2, tab3 = st.tabs(["A Space Journey", "Your Dayversary", "Memento Mori"])
 
     ### Your Cosmic Journey
-    with tab1: 
+    with tab1:
         current_date = datetime.date.today()
-
         days_since_birth = current_date - usr_dob
+
+        # Pre-calculate cosmic journey values
+        total_hours = HOURS_PER_DAY * days_since_birth.days
+        distance_km = total_hours * EARTH_SPEED_KMH
+        distance_ly = distance_km / LIGHT_YEAR_KM
+        universe_proportion = (distance_ly / OBSERVABLE_UNIVERSE_LY) * 100
+        ant_proportion = (ANT_CM / EARTH_DIAMETER_CM) * 100
+        cell_proportion = (CELL_NUCLEUS_CM / EARTH_DIAMETER_CM) * 100
 
         st.subheader("A cosmic Journey!")
         st.markdown(f"#### 👋 Hello {usr_name if usr_name else 'space traveller'}!")
@@ -70,59 +88,64 @@ else:
                         - Galaxies around us travel at the incredible speed of 1000 Km/s (3,600,000 km/h) around the Great Attractor, 
                         a cluster of galaxies located at the gravitational center of Laniakea, the local supercluster to which the Milky Way 
                         also belongs.  
-                        - The Great Attractor is about 150,000,000 light-years away from us; a light-year is equal to almost 9.461 billion kilometers.  
+                        - The Great Attractor is about 150,000,000 light-years away from us; a light-year is equal to almost 9.461 trillion kilometers.  
                         - So far, we've described these velocities relative to some other structure. But is there a universal reference point 
                         with respect to which we can define the motion and therefore the velocity of an object? The cosmic microwave background 
                         radiation, discovered in 1964, is the residual radiation from the early stages of the universe's birth and can still be 
-                        observed today through a radio telescope. Towards the end of the 20th century, it was discovered that the Earth moves 
-                        relative to the cosmic microwave background radiation at a well-defined speed and direction. The Earth travels at a 
-                        speed of 370km/s ({earth_speed_kmh:,} km/h) in the direction of the constellation Leo.
+                        observed today through a radio telescope. Towards the end of the 20th century, it was discovered that the Earth moves
+                        relative to the cosmic microwave background radiation at a well-defined speed and direction. The Earth travels at a
+                        speed of 370km/s ({EARTH_SPEED_KMH:,} km/h) in the direction of the constellation Leo.
                         """)
-        st.markdown(f"""Now, since `1 day = 24 hours`, it follows that `{days_since_birth.days:,} days = {24*days_since_birth.days:,} hours` \
-                    and since we just learned that **Earth travels at a speed of {earth_speed_kmh:,} km/h** it means that so far in your lifetime you have traveled **<span style="font-size:15.0pt;">{24*days_since_birth.days*1332000:,}</span>** km.""", 
+        st.markdown(f"""Now, since `1 day = 24 hours`, it follows that `{days_since_birth.days:,} days = {total_hours:,} hours` \
+                    and since we just learned that **Earth travels at a speed of {EARTH_SPEED_KMH:,} km/h** it means that so far in your lifetime you have traveled **<span style="font-size:15.0pt;">{distance_km:,}</span>** km.""",
                     unsafe_allow_html=True)
         col1, col2 = st.columns(2)
         
-        with col1: 
+        with col1:
             st.markdown(f"""
-                    ##### Feeling down?  
+                    ##### Feeling down?
                     On those days when you wake up and feel like you haven't accomplished enough or if you just need a little nudge, remember that in your lifetime you've already \
-                        explored over **<span style="font-size:13.0pt;">{str(24*days_since_birth.days*earth_speed_kmh)[:3]} billion kilometers</span>** of \
+                        explored over **<span style="font-size:13.0pt;">{str(distance_km)[:3]} billion kilometers</span>** of \
                             cosmic space!
                     """, unsafe_allow_html=True)
             st.markdown(" ")
-        with col2: 
+        with col2:
             st.markdown(f"""
-                    ##### Need some grounding?  
+                    ##### Need some grounding?
                     When, on the other hand, you feel on top of the world and need to come back down to earth, consider that \
-                        those {str(24*days_since_birth.days*earth_speed_kmh)[:3]} billion kilometers are equivalent to just\
-                            about **<span style="font-size:13.0pt;">{24*days_since_birth.days*earth_speed_kmh/9461000000000:.5f} light-years</span>**.
+                        those {str(distance_km)[:3]} billion kilometers are equivalent to just\
+                            about **<span style="font-size:13.0pt;">{distance_ly:.5f} light-years</span>**.
                     """, unsafe_allow_html=True)
         
         st.markdown("##### So is that a lot or not?")
-        st.markdown(f"""It's hard to juggle such astronomical numbers in our head, so let's compare them to something we have more direct experience with.  
-                    But first, consider this: the [**observable universe**](https://en.wikipedia.org/wiki/Observable_universe) currently has a diameter of about **<span style="font-size:13.0pt;">92 billion light-years</span>**,
-                    so **the portion you've explored so far** is equivalent to 
-                    **<span style="font-size:13.0pt;">{(24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000*100:.15f}%</span>** \
-                    of its diameter.  
-                    <img src=https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zM19zYmFfZ2FsYXh5X19pc29sYXRlZF9vbl93aGl0ZV9iYWNrZ3JvdW5kX2E2NmQ2YWJmLWMwN2QtNGU1Yy05OTNkLWIxM2Q1ZmUzOWRmZl8xLmpwZw.jpg alt="Galaxy artwork" width="350">
+        st.markdown(f"""It's hard to juggle such astronomical numbers in our head, so let's compare them to something we have more direct experience with.
+                    But first, consider this: the [**observable universe**](https://en.wikipedia.org/wiki/Observable_universe) currently has a diameter of about **<span style="font-size:13.0pt;">{OBSERVABLE_UNIVERSE_LY:,} light-years</span>**,
+                    so **the portion you've explored so far** is equivalent to
+                    **<span style="font-size:13.0pt;">{universe_proportion:.15f}%</span>** \
+                    of its diameter.
                     """, unsafe_allow_html=True)
+        _, img_col, _ = st.columns([1, 2, 1])
+        with img_col:
+            st.image("images/galaxy.jpg", width=350)
         
         st.markdown(f"""Does this make you feel like a **tiny ant**? Well, you should know that the comparison doesn't actually hold up. \
-                    In fact, a small ant like the [**Pharaoh ant**](https://en.wikipedia.org/wiki/Pharaoh_ant) is about {ant_cm}cm long, and if we compare it to Earth's diameter, \
-                    which is about {earth_diameter_cm:,}cm, then the insect is equivalent to about **<span style="font-size:13.0pt;">{ant_cm/earth_diameter_cm*100:.15f}%</span>** of the Earth's diameter, \
-                    so this comparison would underestimate the proportion by about **<span style="font-size:13.0pt;">{abs(magnitude((24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000) - magnitude(ant_cm/earth_diameter_cm))} orders of magnitude</span>**!""", 
+                    In fact, a small ant like the [**Pharaoh ant**](https://en.wikipedia.org/wiki/Pharaoh_ant) is about {ANT_CM}cm long, and if we compare it to Earth's diameter, \
+                    which is about {EARTH_DIAMETER_CM:,}cm, then the insect is equivalent to about **<span style="font-size:13.0pt;">{ant_proportion:.15f}%</span>** of the Earth's diameter, \
+                    so this comparison would underestimate the proportion by about **<span style="font-size:13.0pt;">{abs(magnitude(universe_proportion / 100) - magnitude(ant_proportion / 100))} orders of magnitude</span>**!""",
                     unsafe_allow_html=True)
-        st.markdown("""<img src=https://media.istockphoto.com/id/1387046877/vector/many-ants-vector-seamless-pattern.jpg?s=612x612&w=0&k=20&c=Ri4xcPgpsIdSIDk05XNOy0ime8U3tQ5X62RTxmgXDQM= alt="Ants on white background" width="350">""", 
-                        unsafe_allow_html=True)
+        _, img_col, _ = st.columns([1, 2, 1])
+        with img_col:
+            st.image("images/ants.jpg", width=350)
 
-        st.markdown(f"""To have a more accurate comparison, we need to borrow a microscope! :microscope:  
-                    The **nucleus of an animal cell** measures an average of 0.001cm which, compared to the Earth's diameter, 
-                    is about **<span style="font-size:13.0pt;">{0.001/earth_diameter_cm*100:.15f}%</span>**, which is much more aligned to 
-                    our initial proportion (although it is still about **<span style="font-size:13.0pt;">{round((0.001/earth_diameter_cm) / ((24*days_since_birth.days*earth_speed_kmh/9461000000000)/92000000000),2)}
-                    times bigger</span>** than the proportion we started with).  
-                    <img src=https://etc.usf.edu/clipart/15300/15389/cell_15389_lg.gif alt="Cell and nucleus" width="200">
-                    """, unsafe_allow_html=True) 
+        st.markdown(f"""To have a more accurate comparison, we need to borrow a microscope! :microscope:
+                    The **nucleus of an animal cell** measures an average of {CELL_NUCLEUS_CM}cm which, compared to the Earth's diameter,
+                    is about **<span style="font-size:13.0pt;">{cell_proportion:.15f}%</span>**, which is much more aligned to
+                    our initial proportion (although it is still about **<span style="font-size:13.0pt;">{round(cell_proportion / universe_proportion, 2)}
+                    times bigger</span>** than the proportion we started with).
+                    """, unsafe_allow_html=True)
+        _, img_col, _ = st.columns([1, 2, 1])
+        with img_col:
+            st.image("images/cell.gif", width=200) 
         
         st.markdown(f"""
                     <span style="font-size:13.0pt;">So in conclusion, we can say that **<span style="font-size:15.0pt;">the distance you've traveled in space so far</span>**
@@ -143,15 +166,16 @@ else:
             days_input = col1.number_input("Enter the number of days", 
                                            value=10000, 
                                            min_value=0)
-        if usr_dob+datetime.timedelta(days=days_input) < datetime.date.today(): 
-            st.subheader(f"Your {days_input:,} dayversary was on the {usr_dob+datetime.timedelta(days=days_input)}")
-            st.markdown(f"##### and you were about {days_input/365:.0f} years old")
-        elif usr_dob+datetime.timedelta(days=days_input) > datetime.date.today(): 
-            st.subheader(f"Your {days_input:,} dayversary will be on the {usr_dob+datetime.timedelta(days=days_input)}")
-            st.markdown(f"###### and you will be about {days_input/365:.0f} years old")
-        elif usr_dob+datetime.timedelta(days=days_input) == datetime.date.today(): 
-            st.subheader(f"Hoorray! 🎉 Your dayversary is today!!")
-        else: 
+        dayversary_date = usr_dob + datetime.timedelta(days=days_input)
+        if dayversary_date < datetime.date.today():
+            st.subheader(f"Your {days_input:,} dayversary was on the {dayversary_date}")
+            st.markdown(f"##### and you were about {days_input/DAYS_PER_YEAR:.0f} years old")
+        elif dayversary_date > datetime.date.today():
+            st.subheader(f"Your {days_input:,} dayversary will be on the {dayversary_date}")
+            st.markdown(f"###### and you will be about {days_input/DAYS_PER_YEAR:.0f} years old")
+        elif dayversary_date == datetime.date.today():
+            st.subheader(f"Hooray! 🎉 Your dayversary is today!!")
+        else:
             st.markdown("Something went wrong... 🤖")
 
     ### Memento Mori Life Calendar
@@ -162,15 +186,18 @@ else:
         st.caption("*Credits: this calendar has been inspired by the Daily Stoic Memento Mori [calendar](https://store.dailystoic.com/collections/memento-mori/products/premium-memento-mori-calendar).*")
         st.markdown("""> *You could leave life right now. Let that determine what you do and say and think.*  
                     **Marcus Aurelius**""")
-        years_left = 80 - (today - usr_dob).days/365 if (today - usr_dob).days/365 <= 80 else 0
-        #st.markdown(f"""Nowadays, the average human lifespan is **80 years**, that is {80*52:,} weeks or {80*52*7:,} days. """)
-        if (today - usr_dob).days/365 < 80: 
-            st.markdown(f"""Nowadays, the average human lifespan is **80 years**, that is {80*52:,} weeks or {80*52*7:,} days.  
-                        If you were lucky enough to live that long, you would have **<span style="font-size:15.0pt;">{years_left:.0f} years left to live</span>**, then think again to Marcus Aurelius words: **how will you spend them?** 
+        user_age_years = (today - usr_dob).days / DAYS_PER_YEAR
+        years_left = AVERAGE_LIFESPAN_YEARS - user_age_years if user_age_years <= AVERAGE_LIFESPAN_YEARS else 0
+        total_weeks = AVERAGE_LIFESPAN_YEARS * WEEKS_PER_YEAR
+        total_days = total_weeks * 7
+
+        if user_age_years < AVERAGE_LIFESPAN_YEARS:
+            st.markdown(f"""Nowadays, the average human lifespan is **{AVERAGE_LIFESPAN_YEARS} years**, that is {total_weeks:,} weeks or {total_days:,} days.
+                        If you were lucky enough to live that long, you would have **<span style="font-size:15.0pt;">{years_left:.0f} years left to live</span>**, then think again to Marcus Aurelius words: **how will you spend them?**
                         """, unsafe_allow_html=True)
-        else: 
-            st.markdown(f"""Nowadays, the average human lifespan is **80 years**, that is {80*52:,} weeks or {80*52*7:,} days and 
-                        you were lucky enough to live that long! 
+        else:
+            st.markdown(f"""Nowadays, the average human lifespan is **{AVERAGE_LIFESPAN_YEARS} years**, that is {total_weeks:,} weeks or {total_days:,} days and
+                        you were lucky enough to live that long!
                         """)
         st.markdown("""
                         **Each square in this calendar represents a week of your life** and each column contains 52 weeks, that is 1 year of your life: 
@@ -178,30 +205,26 @@ else:
                         (or as [Seneca said](https://www.goodreads.com/quotes/447621-what-man-can-you-show-me-who-places-any-value), how much you’ve already died), 
                         - whereas the :grey[*light-grey squares*] will show you how much life you've (hopefully) got left.
                         """, unsafe_allow_html=True)
-        st.info("Note: calendar redering is optimized for desktop consumption.")
+        st.info("Note: calendar rendering is optimized for desktop consumption.")
 
         # data definition for calendar
-
-        #dob = datetime.date(1988, 9, 25)
-        #days = (today - dob).days
-        #years = (today - dob).days/365
-
         # This if-else is necessary for those entering a dob resulting in an age greater than 80 years
-        
-        if (today - usr_dob).days/7 <= 4160: 
-            weeks = (today - usr_dob).days/7
-        else: 
-            weeks = 4160
+        weeks_max = AVERAGE_LIFESPAN_YEARS * WEEKS_PER_YEAR
+        weeks_lived = (today - usr_dob).days / 7
 
-        weeks_max = 80*52
+        if weeks_lived <= weeks_max:
+            weeks = weeks_lived
+        else:
+            weeks = weeks_max
+
         weeks_rem = weeks_max - round(weeks)
         
         weeks_cal = np.vstack((np.ones((round(weeks),1)), 
                             np.zeros((weeks_rem,1)) ))
                             
-        df_cal = pd.DataFrame(data=weeks_cal.reshape(-1,52).T, 
-                            index=[str(wk) for wk in range(1,53)], 
-                            columns=range(1,81))
+        df_cal = pd.DataFrame(data=weeks_cal.reshape(-1, WEEKS_PER_YEAR).T,
+                            index=[str(wk) for wk in range(1, WEEKS_PER_YEAR + 1)],
+                            columns=range(1, AVERAGE_LIFESPAN_YEARS + 1))
 
         # plot
         cell_size = 15
@@ -225,8 +248,8 @@ else:
         st.plotly_chart(fig, use_container_width=True, config = {'displayModeBar': False})
 
         st.markdown("""
-                    Let's not forget that while we should to ponder on the brevity of life, we also need to hold that knowledge in tension with 
-                    how incredible life can be when we remember to live it well and with purpouse: 
+                    Let's not forget that while we should ponder on the brevity of life, we also need to hold that knowledge in tension with 
+                    how incredible life can be when we remember to live it well and with purpose: 
                     - Memento Mori: remember that you will die 
                     - Memento Vivere: **remember to live!**
                     """)
