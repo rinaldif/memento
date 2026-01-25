@@ -199,13 +199,23 @@ else:
             st.markdown(f"""Nowadays, the average human lifespan is **{AVERAGE_LIFESPAN_YEARS} years**, that is {total_weeks:,} weeks or {total_days:,} days and
                         you were lucky enough to live that long!
                         """)
-        st.markdown("""
-                        **Each square in this calendar represents a week of your life** and each column contains 52 weeks, that is 1 year of your life: 
-                        - by looking at the :grey[**dark-grey squares**], you will see how much life you've already lived 
-                        (or as [Seneca said](https://www.goodreads.com/quotes/447621-what-man-can-you-show-me-who-places-any-value), how much you’ve already died), 
+        # Let user choose calendar orientation
+        is_mobile = st.toggle("📱 Mobile view", value=False, help="Switch to portrait-friendly layout")
+
+        if is_mobile:
+            st.markdown("""
+                        **Each square in this calendar represents a week of your life** and each row contains 52 weeks, that is 1 year of your life:
+                        - by looking at the :grey[**dark-grey squares**], you will see how much life you've already lived
+                        (or as [Seneca said](https://www.goodreads.com/quotes/447621-what-man-can-you-show-me-who-places-any-value), how much you've already died),
                         - whereas the :grey[*light-grey squares*] will show you how much life you've (hopefully) got left.
                         """, unsafe_allow_html=True)
-        st.info("Note: calendar rendering is optimized for desktop consumption.")
+        else:
+            st.markdown("""
+                        **Each square in this calendar represents a week of your life** and each column contains 52 weeks, that is 1 year of your life:
+                        - by looking at the :grey[**dark-grey squares**], you will see how much life you've already lived
+                        (or as [Seneca said](https://www.goodreads.com/quotes/447621-what-man-can-you-show-me-who-places-any-value), how much you've already died),
+                        - whereas the :grey[*light-grey squares*] will show you how much life you've (hopefully) got left.
+                        """, unsafe_allow_html=True)
 
         # data definition for calendar
         # This if-else is necessary for those entering a dob resulting in an age greater than 80 years
@@ -218,22 +228,35 @@ else:
             weeks = weeks_max
 
         weeks_rem = weeks_max - round(weeks)
-        
-        weeks_cal = np.vstack((np.ones((round(weeks),1)), 
-                            np.zeros((weeks_rem,1)) ))
-                            
-        df_cal = pd.DataFrame(data=weeks_cal.reshape(-1, WEEKS_PER_YEAR).T,
-                            index=[str(wk) for wk in range(1, WEEKS_PER_YEAR + 1)],
-                            columns=range(1, AVERAGE_LIFESPAN_YEARS + 1))
+
+        weeks_cal = np.vstack((np.ones((round(weeks), 1)),
+                            np.zeros((weeks_rem, 1))))
+
+        # Create DataFrame with orientation based on screen size
+        if is_mobile:
+            # Mobile: 80 rows (years) × 52 columns (weeks) - portrait friendly
+            df_cal = pd.DataFrame(data=weeks_cal.reshape(-1, WEEKS_PER_YEAR),
+                                index=range(1, AVERAGE_LIFESPAN_YEARS + 1),
+                                columns=[str(wk) for wk in range(1, WEEKS_PER_YEAR + 1)])
+            x_label = "Weeks in the year"
+            y_label = "Years in your life"
+            cell_size = 6
+        else:
+            # Desktop: 52 rows (weeks) × 80 columns (years) - landscape friendly
+            df_cal = pd.DataFrame(data=weeks_cal.reshape(-1, WEEKS_PER_YEAR).T,
+                                index=[str(wk) for wk in range(1, WEEKS_PER_YEAR + 1)],
+                                columns=range(1, AVERAGE_LIFESPAN_YEARS + 1))
+            x_label = "Years in your life"
+            y_label = "Weeks in the year"
+            cell_size = 15
 
         # plot
-        cell_size = 15
         row_title_width = 50
-        width = cell_size*len(df_cal.columns) + row_title_width
-        height = cell_size*len(df_cal.index)
+        width = cell_size * len(df_cal.columns) + row_title_width
+        height = cell_size * len(df_cal.index)
 
-        fig = px.imshow(df_cal, width=width, height=height, color_continuous_scale=['lightgrey', 'darkgrey'], 
-                        labels=dict(x="Years in your life", y="Weeks in the year", color="Lived / not yet lived")
+        fig = px.imshow(df_cal, width=width, height=height, color_continuous_scale=['lightgrey', 'darkgrey'],
+                        labels=dict(x=x_label, y=y_label, color="Lived / not yet lived")
                         )
         fig.update(layout_coloraxis_showscale=False)   # to remove the colorscale
         fig.update_layout(showlegend=False)
