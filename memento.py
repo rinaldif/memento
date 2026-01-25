@@ -9,15 +9,21 @@ import math
 # Page config and setup
 st.set_page_config(
     page_title="Memento Vivere",
-    page_icon="🚀",
+    page_icon="⏳",
     layout="wide",
     initial_sidebar_state="expanded"
-    #menu_items={
-    #    'Get Help': 'https://www.extremelycoolapp.com/help',
-    #    'Report a bug': "https://www.extremelycoolapp.com/bug",
-    #    'About': "# This is a header. This is an *extremely* cool app!"
-    #}
 )
+
+# PWA meta tags for installable app experience
+st.markdown("""
+    <link rel="manifest" href="./static/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Memento">
+    <link rel="apple-touch-icon" href="./static/icon-192.png">
+    <meta name="theme-color" content="#FF6B35">
+""", unsafe_allow_html=True)
 
 # Initial constants and functions definition
 today = datetime.date.today()
