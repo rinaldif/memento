@@ -111,7 +111,7 @@ else:
             st.markdown(f"""
                     ##### Feeling down?
                     On those days when you wake up and feel like you haven't accomplished enough or if you just need a little nudge, remember that in your lifetime you've already \
-                        explored over **<span style="font-size:13.0pt;">{str(distance_km)[:3]} billion kilometers</span>** of \
+                        explored over **<span style="font-size:13.0pt;">{distance_km / 1_000_000_000:.2f} billion kilometers</span>** of \
                             cosmic space!
                     """, unsafe_allow_html=True)
             st.markdown(" ")
@@ -119,7 +119,7 @@ else:
             st.markdown(f"""
                     ##### Need some grounding?
                     When, on the other hand, you feel on top of the world and need to come back down to earth, consider that \
-                        those {str(distance_km)[:3]} billion kilometers are equivalent to just\
+                        those {distance_km / 1_000_000_000:.2f} billion kilometers are equivalent to just\
                             about **<span style="font-size:13.0pt;">{distance_ly:.5f} light-years</span>**.
                     """, unsafe_allow_html=True)
         
@@ -137,7 +137,7 @@ else:
         st.markdown(f"""Does this make you feel like a **tiny ant**? Well, you should know that the comparison doesn't actually hold up. \
                     In fact, a small ant like the [**Pharaoh ant**](https://en.wikipedia.org/wiki/Pharaoh_ant) is about {ANT_CM}cm long, and if we compare it to Earth's diameter, \
                     which is about {EARTH_DIAMETER_CM:,}cm, then the insect is equivalent to about **<span style="font-size:13.0pt;">{ant_proportion:.15f}%</span>** of the Earth's diameter, \
-                    so this comparison would underestimate the proportion by about **<span style="font-size:13.0pt;">{abs(magnitude(universe_proportion / 100) - magnitude(ant_proportion / 100))} orders of magnitude</span>**!""",
+                    so this comparison would overestimate the proportion by about **<span style="font-size:13.0pt;">{abs(magnitude(universe_proportion / 100) - magnitude(ant_proportion / 100))} orders of magnitude</span>**!""",
                     unsafe_allow_html=True)
         _, img_col, _ = st.columns([1, 2, 1])
         with img_col:
@@ -146,9 +146,9 @@ else:
         st.markdown(f"""To have a more accurate comparison, we need to borrow a microscope! :microscope:
                     The **nucleus of an animal cell** measures an average of {CELL_NUCLEUS_CM}cm which, compared to the Earth's diameter,
                     is about **<span style="font-size:13.0pt;">{cell_proportion:.15f}%</span>**, which is much more aligned to
-                    our initial proportion (although it is still about **<span style="font-size:13.0pt;">{round(cell_proportion / universe_proportion, 2)}
-                    times bigger</span>** than the proportion we started with).
+                    our initial proportion.
                     """, unsafe_allow_html=True)
+                    # (although our initial proportion is still about **<span style="font-size:13.0pt;">{round(universe_proportion / cell_proportion, 0)} times bigger</span>** than the proportion of the cell nucleus)
         _, img_col, _ = st.columns([1, 2, 1])
         with img_col:
             st.image("images/cell.gif", width=200) 
